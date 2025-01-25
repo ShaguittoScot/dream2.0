@@ -40,9 +40,9 @@ const Navbar = () => {
           <h1 className="text-3xl font-bold">Dreamers</h1>
         </div>
 
-        {/* Logo Centrado */}
+        {/* Logo*/}
         <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2">
-          <img src="/assets/logo.png" alt="Logo" className="w-24" />
+          <img src="/images/logo.png" alt="Logo" className="w-24" />
         </div>
 
         {/* Menu */}
