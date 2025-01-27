@@ -93,12 +93,41 @@ const Home = () => {
 
       <section className="gallery py-16 bg-gray-100">
         <h2 className="text-center text-3xl font-bold mb-8">Galería</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-          <img src="/assets/gallery1.jpg" className="rounded shadow-md" alt="Galería 1" />
-          <img src="/assets/gallery2.jpg" className="rounded shadow-md" alt="Galería 2" />
-          <img src="/assets/gallery3.jpg" className="rounded shadow-md" alt="Galería 3" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+          <img
+            src="/images/galeria/galeria1.jpg"
+            className="rounded shadow-md sm:col-span-2 sm:row-span-2 object-cover w-full h-full"
+            alt="Galería 1"
+          />
+          <img
+            src="/images/galeria/galeria2.jpg"
+            className="rounded shadow-md object-cover w-full h-full"
+            alt="Galería 2"
+          />
+          <img
+            src="/images/galeria/galeria3.jpg"
+            className="rounded shadow-md sm:col-span-1 sm:row-span-2 object-cover w-full h-full"
+            alt="Galería 3"
+          />
+          <img
+            src="/images/galeria/galeria4.jpg"
+            className="rounded shadow-md object-cover w-full h-full"
+            alt="Galería 4"
+          />
+          <img
+            src="/images/galeria/galeria5.jpg"
+            className="rounded shadow-md sm:col-span-2 object-cover w-full h-full"
+            alt="Galería 5"
+          />
+          <img
+            src="/images/galeria/galeria6.jpg"
+            className="rounded shadow-md object-cover w-full h-full"
+            alt="Galería 6"
+          />
         </div>
       </section>
+
+
       {/*end gallery */}
 
       {/*Team Template */}
@@ -176,7 +205,7 @@ const Home = () => {
               <p className="text-gray-900 text-xl font-bold">Jean</p>
             </div>
 
-            
+
 
             <div className="min-w-[250px] text-center">
               <img
