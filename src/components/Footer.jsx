@@ -13,7 +13,7 @@ const Footer = () => {
         </div>
 
 
-        <h3 className="text-2xl font-bold mb-4">Equipo Dreamers</h3>
+        <h3 className="text-2xl font-bold mb-4">Dreamers</h3>
         <p className="mb-4">Síguenos en nuestras redes sociales</p>
         <div className="flex justify-center space-x-6">
 
@@ -75,7 +75,7 @@ const Footer = () => {
           </a>
 
         </div>
-        <p className="mt-6 text-gray-400">&copy; 2025 Equipo Dreamers. Todos los derechos reservados.</p>
+        <p className="mt-6 text-gray-400">&copy; 2025 Dreamers. Todos los derechos reservados.</p>
       </div>
     </footer>
   );

@@ -30,14 +30,14 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`p-4 text-white fixed top-0 left-0 w-full z-10 transition-all duration-300 ${
+      className={`p-4 text-white fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         isScrolled ? 'bg-black shadow-lg' : 'bg-transparent'
       }`}
     >
       <div className="container mx-auto flex justify-between items-center">
         {/* Nombre del equip */}
         <div className="flex items-center space-x-4">
-          <h1 className="text-3xl font-bold">Dreamers</h1>
+          <h1 className="text-3xl font-bold font-arvo hover:text-orange-400">Dreamers</h1>
         </div>
 
         {/* Logo*/}
@@ -50,7 +50,7 @@ const Navbar = () => {
           <li>
             <Link 
               to="/" 
-              className="text-gray-100 no-underline hover:text-gray-400 transition-all duration-300"
+              className="text-gray-100 no-underline hover:text-orange-400 transition-all duration-300 font-arvo"
             >
               Inicio
             </Link>
@@ -58,7 +58,7 @@ const Navbar = () => {
           <li>
             <Link 
               to="/jugadores" 
-              className="text-gray-100 no-underline hover:text-gray-400 transition-all duration-300"
+              className="text-gray-100 no-underline hover:text-orange-400 transition-all duration-300 font-arvo"
             >
               Jugadores
             </Link>
@@ -66,7 +66,7 @@ const Navbar = () => {
           <li>
             <Link 
               to="/contacto" 
-              className="text-gray-100 no-underline hover:text-gray-400 transition-all duration-300"
+              className="text-gray-100 no-underline hover:text-orange-400 transition-all duration-300 font-arvo"
             >
               Contacto
             </Link>
@@ -89,21 +89,21 @@ const Navbar = () => {
             <Link 
               to="/" 
               onClick={toggleMenu}
-              className="text-white text-2xl no-underline hover:text-gray-400"
+              className="text-white text-2xl no-underline hover:text-orange-400"
             >
               Inicio
             </Link>
             <Link 
               to="/jugadores" 
               onClick={toggleMenu}
-              className="text-white text-2xl no-underline hover:text-gray-400"
+              className="text-white text-2xl no-underline hover:text-orange-400"
             >
               Jugadores
             </Link>
             <Link 
               to="/contacto" 
               onClick={toggleMenu}
-              className="text-white text-2xl no-underline hover:text-gray-400"
+              className="text-white text-2xl no-underline hover:text-orange-400"
             >
               Contacto
             </Link>
