@@ -89,7 +89,7 @@ const Navbar = () => {
             <Link 
               to="/" 
               onClick={toggleMenu}
-              className="text-white text-2xl no-underline hover:text-orange-400"
+              className="text-orange-400 text-2xl no-underline hover:text-white"
             >
               Inicio
             </Link>

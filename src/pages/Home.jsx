@@ -1,10 +1,19 @@
 import React from 'react';
 import Footer from '../components/Footer';
 import Gallery from "../components/Gallery";
+import VideoGallery from '../components/VideoGalery.jsx';
 
 const images = Array.from({ length: 15 }).map(
   (_, index) => `/images/galeria/galeria (${index + 1}).jpg`
 );
+
+  // Generar videos dinámicamente
+  const videos = Array.from({ length: 17 }).map((_, index) => ({
+    url: `/videos/video (${index + 1}).mp4`, // Asegúrate de que los videos estén en la carpeta public/videos
+    title: `Video ${index + 1}`,
+    date: `${Math.floor(Math.random() * 30) + 1}d`,
+    category: index % 2 === 0 ? "game" : "players",
+  }));
 
 const Home = () => {
   return (
@@ -110,213 +119,64 @@ const Home = () => {
         <Gallery images={images} />
       </section>
 
-      {/*end gallery */}
-
-      {/*Team Template */}
-      <section className="team-roster py-16 bg-gray-100">
-        <h2 className="text-center text-4xl font-bold mb-12 text-orange-400 font-arvo">
-          Equipo
+      {/* Team Template */}
+      <section className="team-roster py-20 bg-black">
+        <h2 className="text-center text-5xl font-extrabold mb-12 text-orange-400 font-arvo tracking-wide">
+          Nuestro Equipo
         </h2>
 
-        <div className="overflow-x-scroll scrollbar-hide">
-          <div className="flex space-x-8 px-8">
+        <div className="overflow-x-auto scrollbar-hide">
+          <div className="flex space-x-10 px-12 py-4">
 
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/volpi.png"
-                alt="Tiago Volpi"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">66</h3>
-              <p className="text-gray-500 text-sm uppercase">Juan Diego</p>
-              <p className="text-gray-900 text-xl font-bold">Diego</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/placeholder.png"
-                alt="Diego Barbosa"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">7</h3>
-              <p className="text-gray-500 text-sm uppercase">Abisha</p>
-              <p className="text-gray-900 text-xl font-bold">Abisha</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/equipo/Alex.jpg"
-                alt="Antonio Briseño"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">3</h3>
-              <p className="text-gray-500 text-sm uppercase">Alexander</p>
-              <p className="text-gray-900 text-xl font-bold">Alexander</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/equipo/Ian.jpg"
-                alt="Bruno Méndez"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">14</h3>
-              <p className="text-gray-500 text-sm uppercase">Ian</p>
-              <p className="text-gray-900 text-xl font-bold">Ian</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/mendez.png"
-                alt="Bruno Méndez"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">4</h3>
-              <p className="text-gray-500 text-sm uppercase">Capy</p>
-              <p className="text-gray-900 text-xl font-bold">Capy</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/mendez.png"
-                alt="Bruno Méndez"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">14</h3>
-              <p className="text-gray-500 text-sm uppercase">Jean</p>
-              <p className="text-gray-900 text-xl font-bold">Jean</p>
-            </div>
-
-
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/equipo/Shack.jpg"
-                alt="Bruno Méndez"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">66</h3>
-              <p className="text-gray-500 text-sm uppercase">Shack</p>
-              <p className="text-gray-900 text-xl font-bold">Shack</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/equipo/Kamil.jpg"
-                alt="Bruno Méndez"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">11</h3>
-              <p className="text-gray-500 text-sm uppercase">Kamil</p>
-              <p className="text-gray-900 text-xl font-bold">Kamil</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/mendez.png"
-                alt="Bruno Méndez"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">9</h3>
-              <p className="text-gray-500 text-sm uppercase">Bruno</p>
-              <p className="text-gray-900 text-xl font-bold">MÉNDEZ</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/mendez.png"
-                alt="Bruno Méndez"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">99</h3>
-              <p className="text-gray-500 text-sm uppercase">Omar</p>
-              <p className="text-gray-900 text-xl font-bold">Omar</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/mendez.png"
-                alt="Bruno Méndez"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">30</h3>
-              <p className="text-gray-500 text-sm uppercase">Dani</p>
-              <p className="text-gray-900 text-xl font-bold">Dani</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/mendez.png"
-                alt="Bruno Méndez"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">14</h3>
-              <p className="text-gray-500 text-sm uppercase">Edgar</p>
-              <p className="text-gray-900 text-xl font-bold">Edgar</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/mendez.png"
-                alt="Bruno Méndez"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">12</h3>
-              <p className="text-gray-500 text-sm uppercase">Leo</p>
-              <p className="text-gray-900 text-xl font-bold">Leo</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/equipo/Iker.jpeg"
-                alt="Bruno Méndez"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">13</h3>
-              <p className="text-gray-500 text-sm uppercase">Iker</p>
-              <p className="text-gray-900 text-xl font-bold">Iker</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/mendez.png"
-                alt="Bruno Méndez"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">44</h3>
-              <p className="text-gray-500 text-sm uppercase">Alex</p>
-              <p className="text-gray-900 text-xl font-bold">Alex</p>
-            </div>
-
-            <div className="min-w-[250px] text-center">
-              <img
-                src="/images/mendez.png"
-                alt="Bruno Méndez"
-                className="w-full h-auto rounded-lg"
-              />
-              <h3 className="text-red-600 text-3xl font-bold mt-4">14</h3>
-              <p className="text-gray-500 text-sm uppercase">Oswaldo</p>
-              <p className="text-gray-900 text-xl font-bold">Oswaldo</p>
-            </div>
-
+            {[
+              { num: 66, name: "Juan Diego", img: "/images/volpi.png" },
+              { num: 7, name: "Abisha", img: "/images/placeholder.png" },
+              { num: 3, name: "Alexander", img: "/images/equipo/Alex.jpg" },
+              { num: 14, name: "Ian", img: "/images/equipo/Ian.jpg" },
+              { num: 4, name: "Capy", img: "/images/mendez.png" },
+              { num: 11, name: "Kamil", img: "/images/equipo/Kamil.jpg" },
+              { num: 9, name: "Bruno", img: "/images/mendez.png" },
+              { num: 99, name: "Omar", img: "/images/mendez.png" },
+              { num: 30, name: "Dani", img: "/images/mendez.png" },
+              { num: 14, name: "Edgar", img: "/images/mendez.png" },
+              { num: 12, name: "Leo", img: "/images/mendez.png" },
+              { num: 13, name: "Iker", img: "/images/equipo/Iker.jpeg" },
+              { num: 44, name: "Alex", img: "/images/mendez.png" },
+              { num: 14, name: "Oswaldo", img: "/images/mendez.png" }
+            ].map((player, index) => (
+              <div
+                key={index}
+                className="min-w-[280px] bg-neutral-800 p-4 rounded-lg shadow-lg flex flex-col items-center text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+              >
+                <div className="w-56 h-56 flex items-center justify-center">
+                  <img
+                    src={player.img}
+                    alt={player.name}
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                </div>
+                <h3 className="text-red-500 text-4xl font-bold mt-3">{player.num}</h3>
+                <p className="text-gray-400 text-lg uppercase tracking-wide">{player.name}</p>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Botón para ver más */}
         <div className="text-center mt-12">
-          <a href="#" className="text-black font-semibold text-lg hover:underline">
+          <a
+            href="#"
+            className="text-white font-semibold text-lg bg-orange-500 px-8 py-4 rounded-full transition-all duration-300 hover:bg-orange-600 hover:shadow-xl"
+          >
             VER TODO EL EQUIPO →
           </a>
         </div>
       </section>
-      {/*end Team Template */}
+      {/* End Team Template */}
 
       {/* Featured Videos */}
-      <section className="videos py-16 text-center">
-        <h2 className="text-3xl font-bold mb-8">Videos Destacados</h2>
-        <div className="flex justify-center">
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" title="YouTube video" frameBorder="0" allowFullScreen></iframe>
-        </div>
+      <section className="videos ">
+      <VideoGallery videos={videos} />
       </section>
       {/* End Featured Videos */}
 
