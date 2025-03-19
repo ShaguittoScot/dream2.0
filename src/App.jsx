@@ -32,7 +32,6 @@ const App = () => {
         <Navbar className="fixed top-0 w-full z-50 bg-white shadow-md" />
         
         {/* Contenedor principal con margen para el navbar */}
-        <div className="flex-1 mt-20 p-4"> {/* Añadido padding general */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/jugadores" element={<Jugadores />} />
@@ -51,7 +50,6 @@ const App = () => {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
-      </div>
     </Router>
   );
 };
