@@ -1,14 +1,22 @@
 import { auth } from "./firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
-// Registrar usuario
 export async function registrarUsuario(email, password) {
-  const usuario = await createUserWithEmailAndPassword(auth, email, password);
-  return usuario;
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    sessionStorage.setItem('redirectPath', '/admin/partidos');
+    return userCredential;
+  } catch (error) {
+    throw new Error(error.message.replace('Firebase: ', ''));
+  }
 }
 
-// Iniciar sesión
 export async function iniciarSesion(email, password) {
-  const usuario = await signInWithEmailAndPassword(auth, email, password);
-  return usuario;
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    sessionStorage.setItem('redirectPath', '/admin/partidos');
+    return userCredential;
+  } catch (error) {
+    throw new Error(error.message.replace('Firebase: ', ''));
+  }
 }
