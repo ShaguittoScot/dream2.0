@@ -82,9 +82,9 @@ const Acceso = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 p-6 font-arvo">
+    <div className="min-h-screen bg-gray-900 p-6 font-arvo ">
       {!user ? (
-        <div className="bg-black/80 p-8 rounded-xl w-full max-w-md mx-auto">
+        <div className="bg-black/80 p-8 rounded-xl w-full max-w-md mx-auto mt-20">
           <h2 className="text-3xl font-bold text-center text-amber-400 mb-6">
             {isRegistering ? 'Registro Administrativo' : 'Acceso Administrativo'}
           </h2>
