@@ -11,7 +11,7 @@ const AdminDashboard = () => {
   const [seccionActiva, setSeccionActiva] = useState(SECCIONES.JUGADORES);
 
   return (
-    <div className="flex min-h-screen bg-gray-900 text-white">
+    <div className="flex min-h-screen bg-zinc-900 text-white">
       {/* Sidebar */}
       <aside className="md:w-1/4 w-full bg-gray-800 p-6 ">
         <h2 className="text-xl font-bold mb-4 mt-20">Panel de Administración</h2>
