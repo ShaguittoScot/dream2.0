@@ -1,55 +1,40 @@
-import React, { useState, useEffect } from "react";
+// App.js
+import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { auth } from "./firebase/firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Jugadores from "./pages/Jugadores";
-import Contacto from "./pages/Contacto";
-import Acceso from "./pages/Acceso";
-
-const AuthGuard = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  if (loading) return <div className="text-center mt-20">Cargando...</div>;
-  return user ? children : <Navigate to="/acceso" replace />;
-};
+import AuthPage from "./components/admin/login.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
-        {/* Navbar fijo con sombra y z-index alto */}
-        <Navbar className="fixed top-0 w-full z-50 bg-white shadow-md" />
-        
-        {/* Contenedor principal con margen para el navbar */}
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/jugadores" element={<Jugadores />} />
-            <Route path="/contacto" element={<Contacto />} />
-            <Route path="/acceso" element={<Acceso />} />
-            
-            <Route
-              path="/admin/partidos"
-              element={
-                <AuthGuard>
-                  <Acceso />
-                </AuthGuard>
-              }
-            />
-            
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </div>
+        <Navbar />
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/jugadores" element={<Jugadores />} />
+          
+          {/* Página de Login */}
+          <Route path="/administracion" element={<AuthPage />} />
+
+          {/* RUTA PROTEGIDA - Dashboard de Admin */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Redirigir rutas no existentes */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
     </Router>
   );
 };

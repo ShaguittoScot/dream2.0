@@ -30,9 +30,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`p-4 text-white fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-black shadow-lg' : 'bg-transparent'
-      }`}
+      className={`p-4 text-white fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-black shadow-lg' : 'bg-transparent'
+        }`}
     >
       <div className="container mx-auto flex justify-between items-center">
         {/* Nombre del equipo */}
@@ -64,16 +63,9 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
+
             <Link
-              to="/contacto"
-              className="text-gray-100 no-underline hover:text-orange-400 transition-all duration-300 font-arvo"
-            >
-              Contacto
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/acceso"
+              to="/admin"
               className="text-gray-100 no-underline hover:text-orange-400 transition-all duration-300 font-arvo"
             >
               Acceso
@@ -108,15 +100,11 @@ const Navbar = () => {
             >
               Jugadores
             </Link>
+
+
+
             <Link
-              to="/contacto"
-              onClick={toggleMenu}
-              className="text-white text-2xl no-underline hover:text-orange-400"
-            >
-              Contacto
-            </Link>
-            <Link
-              to="/acceso"
+              to="/admin"
               onClick={toggleMenu}
               className="text-white text-2xl no-underline hover:text-orange-400"
             >

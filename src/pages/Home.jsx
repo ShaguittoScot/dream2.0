@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import Gallery from "../components/Gallery";
 import VideoGallery from '../components/VideoGalery.jsx';
-import { db } from "../firebase/firebaseConfig.js";
+import { db } from "../db/conexiondb.js";
 import { collection, getDocs } from "firebase/firestore";
 
 const images = Array.from({ length: 15 }).map(
@@ -207,9 +207,10 @@ const Home = () => {
         <div className="absolute -top-20 -left-20 w-64 h-64 bg-[#d24d33] rounded-full opacity-20 blur-3xl"></div>
         <div className="absolute -top-40 right-0 w-48 h-48 bg-[#f4a244] rounded-full opacity-20 blur-3xl"></div>
       </section>
+      
 
-{/* Team Template */}
-<section className="team-roster py-20 bg-black relative overflow-hidden">
+      {/* Team Template */}
+      <section className="team-roster py-20 bg-black relative overflow-hidden">
         {/* Efecto de fondo sutil con colores del logo */}
         <div className="absolute inset-0 opacity-20 pointer-events-none">
           <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-[#23878e] blur-[150px] opacity-40"></div>
@@ -257,14 +258,14 @@ const Home = () => {
               ].map((player, index) => (
                 <div
                   key={index}
-                  className="min-w-[280px] bg-neutral-900/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex flex-col items-center text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-neutral-800/90 border-2 border-neutral-800/50 hover:border-[#f4a244]/30"
+                  className="min-w-[310px] bg-neutral-900/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex flex-col items-center text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-neutral-800/90 border-2 border-neutral-800/50 hover:border-[#f4a244]/30"
                 >
                   {/* Imagen del jugador */}
-                  <div className="w-56 h-56 flex items-center justify-center relative">
+                  <div className="w-76 h-80 flex items-center justify-center relative">
                     <img
                       src={player.img}
                       alt={player.name}
-                      className="w-full h-full object-cover rounded-lg"
+                      className="w-full h-full object-cover object-center rounded-lg"
                     />
                     <div className="absolute inset-0 bg-[#23878e]/10 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
                   </div>
@@ -275,10 +276,11 @@ const Home = () => {
                     {player.name}
                   </p>
 
-                  {/* Botón de "Ver perfil" */}
+
+                  {/* Botón de "Ver perfil" 
                   <button className="mt-4 px-6 py-2 bg-orange-500/10 backdrop-blur-sm border-2 border-orange-500/20 text-orange-500 font-semibold rounded-lg hover:bg-orange-500/20 hover:border-orange-500/40 transition-all duration-300">
                     Ver perfil
-                  </button>
+                  </button> */}
                 </div>
               ))}
             </div>
