@@ -11,7 +11,7 @@ const FormularioJugadores = () => {
     numero: "",
     edad: "",
     posicion: "",
-    equipo: "",
+    equipo: "Dreamers",
     descripcion: "",
     estadisticas: {
       partidosJugados: "",
@@ -130,8 +130,43 @@ const FormularioJugadores = () => {
           <input type="text" placeholder="Sobrenombre" value={nuevoJugador.sobrenombre} onChange={(e) => setNuevoJugador({ ...nuevoJugador, sobrenombre: e.target.value })} className="bg-gray-800 text-white p-2 rounded" />
           <input type="number" placeholder="Número" value={nuevoJugador.numero} onChange={(e) => setNuevoJugador({ ...nuevoJugador, numero: e.target.value })} className="bg-gray-800 text-white p-2 rounded" />
           <input type="number" placeholder="Edad" value={nuevoJugador.edad} onChange={(e) => setNuevoJugador({ ...nuevoJugador, edad: e.target.value })} className="bg-gray-800 text-white p-2 rounded" />
-          <input type="text" placeholder="Posición" value={nuevoJugador.posicion} onChange={(e) => setNuevoJugador({ ...nuevoJugador, posicion: e.target.value })} className="bg-gray-800 text-white p-2 rounded" />
-          <input type="text" placeholder="Equipo" value={nuevoJugador.equipo} onChange={(e) => setNuevoJugador({ ...nuevoJugador, equipo: e.target.value })} className="bg-gray-800 text-white p-2 rounded" />
+          <select
+            value={nuevoJugador.posicion}
+            onChange={(e) => setNuevoJugador({ ...nuevoJugador, posicion: e.target.value })}
+            className="bg-gray-800 text-white p-2 rounded"
+          >
+            <option value="" disabled>Selecciona una posición</option>
+            <option value="Base">Base (PG)</option>
+            <option value="Escolta">Escolta (SG)</option>
+            <option value="Alero">Alero (SF)</option>
+            <option value="Ala-pívot">Ala-pívot (PF)</option>
+            <option value="Pívot">Pívot (C)</option>
+          </select>
+
+          <input
+            type="text"
+            value= {nuevoJugador.equipo}
+            readOnly
+            className="bg-gray-800 text-white p-2 rounded"
+          />
+
+          <div className="col-span-2">
+            <textarea
+              placeholder="Descripción"
+              value={nuevoJugador.descripcion}
+              onChange={(e) => {
+                if (e.target.value.length <= 200) { // Limita a 200 caracteres
+                  setNuevoJugador({ ...nuevoJugador, descripcion: e.target.value });
+                }
+              }}
+              maxLength={200} // Limita el campo a 200 caracteres
+              rows={4} // Número de filas visibles
+              className="bg-gray-800 text-white p-2 rounded w-full resize-none"
+            />
+            <div className="mt-2 text-sm text-gray-400">
+              {nuevoJugador.descripcion.length}/200 caracteres
+            </div>
+          </div>
         </div>
 
         <h3 className="text-lg font-semibold text-blue-400 mt-4">Estadísticas (Opcionales)</h3>

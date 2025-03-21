@@ -265,7 +265,7 @@ const Home = () => {
               <p className="text-white text-center">Cargando jugadores...</p>
             ) : (
               players.map((player, index) => (
-                <Link to={`/jugador/${player.id}`} key={player.id}>
+                <Link to={`/jugador/${player.id}`} key={player.id} className="no-underline">
                 <div
                   className="min-w-[310px] bg-neutral-900/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex flex-col items-center text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-neutral-800/90 border-2 border-neutral-800/50 hover:border-[#f4a244]/30"
                 >
