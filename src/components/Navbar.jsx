@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { useAuth } from '../hooks/useAuth';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   // Detectar el desplazamiento de la página
   useEffect(() => {
@@ -17,21 +19,16 @@ const Navbar = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Menú en dispositivos móviles
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+  const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
     <nav
-      className={`p-4 text-white fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-black shadow-lg' : 'bg-transparent'
-        }`}
+      className={`p-4 text-white fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-black shadow-lg' : 'bg-transparent'
+      }`}
     >
       <div className="container mx-auto flex justify-between items-center">
         {/* Nombre del equipo */}
@@ -44,7 +41,7 @@ const Navbar = () => {
           <img src="/images/logo.png" alt="Logo" className="w-24" />
         </div>
 
-        {/* Menú */}
+        {/* Menú Escritorio */}
         <ul className="hidden md:flex gap-6 text-lg font-medium">
           <li>
             <Link
@@ -63,24 +60,32 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-
-            <Link
-              to="/admin"
-              className="text-gray-100 no-underline hover:text-orange-400 transition-all duration-300 font-arvo"
-            >
-              Acceso
-            </Link>
+            {user ? (
+              <button
+                onClick={logout}
+                className="text-gray-100 no-underline hover:text-orange-400 transition-all duration-300 font-arvo"
+              >
+                Cerrar Sesión
+              </button>
+            ) : (
+              <Link
+                to="/administracion"
+                className="text-gray-100 no-underline hover:text-orange-400 transition-all duration-300 font-arvo"
+              >
+                Acceso
+              </Link>
+            )}
           </li>
         </ul>
 
-        {/* Botón de menú para móviles */}
+        {/* Botón de menú móvil */}
         <div className="md:hidden">
           <button onClick={toggleMenu} className="text-white text-3xl">
             {menuOpen ? <FaTimes /> : <FaBars />}
           </button>
         </div>
 
-        {/* Menú desplegable */}
+        {/* Menú Móvil */}
         {menuOpen && (
           <div className="md:hidden fixed top-0 left-0 w-full h-screen bg-black bg-opacity-90 flex flex-col items-center justify-center space-y-8">
             <button onClick={toggleMenu} className="absolute top-6 right-6 text-4xl text-white">
@@ -100,16 +105,25 @@ const Navbar = () => {
             >
               Jugadores
             </Link>
-
-
-
-            <Link
-              to="/admin"
-              onClick={toggleMenu}
-              className="text-white text-2xl no-underline hover:text-orange-400"
-            >
-              Acceso
-            </Link>
+            {user ? (
+              <button
+                onClick={() => {
+                  logout();
+                  toggleMenu();
+                }}
+                className="text-white text-2xl no-underline hover:text-orange-400"
+              >
+                Cerrar Sesión
+              </button>
+            ) : (
+              <Link
+                to="/administracion"
+                onClick={toggleMenu}
+                className="text-white text-2xl no-underline hover:text-orange-400"
+              >
+                Acceso
+              </Link>
+            )}
           </div>
         )}
       </div>

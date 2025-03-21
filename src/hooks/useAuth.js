@@ -1,7 +1,5 @@
-// hooks/useAuth.js
-
 import { useState, useEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../db/conexiondb";
 
 const useAuth = () => {
@@ -13,11 +11,22 @@ const useAuth = () => {
       setUser(user);
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
-  return { user, loading };
+  // Función de cierre de sesión
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+      localStorage.removeItem('firebase-auth-token'); // Si usas tokens personalizados
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
+
+  return { user, loading, logout };
 };
 
-export { useAuth };  // Asegúrate de exportar el hook
+export { useAuth };
+
