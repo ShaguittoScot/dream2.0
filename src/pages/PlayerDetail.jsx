@@ -61,14 +61,6 @@ const BasketballProfile = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-8 pb-8 sm:pb-12 pt-16 sm:pt-24">
-          <div className="max-w-7xl mx-auto text-white text-center sm:text-left">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight opacity-95">
-              {player.nombre}
-            </h2>
-            <p className="text-lg sm:text-2xl font-medium mt-2 sm:mt-3 opacity-90">
-              {player.descripcion}
-            </p>
-          </div>
         </div>
       </motion.div>
       {/* *************** FIN BANNER SUPERIOR *************** */}
