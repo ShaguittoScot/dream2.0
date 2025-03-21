@@ -4,6 +4,7 @@ import Gallery from "../components/Gallery";
 import VideoGallery from '../components/VideoGalery.jsx';
 import { db } from "../db/conexiondb.js";
 import { collection, getDocs } from "firebase/firestore";
+import { Link } from "react-router-dom";
 
 const images = Array.from({ length: 15 }).map(
   (_, index) => `/images/galeria/galeria (${index + 1}).jpg`
@@ -35,6 +36,26 @@ const Home = () => {
 
     fetchPartidos();
   }, []);
+
+
+  const [players, setPlayers] = useState([]);
+    const [loading, setLoading] = useState(true);
+  
+    useEffect(() => {
+      const fetchPlayers = async () => {
+        try {
+          const querySnapshot = await getDocs(collection(db, "jugadores")); // Asegúrate de que la colección se llama "jugadores"
+          const playersData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          setPlayers(playersData);
+        } catch (error) {
+          console.error("Error al obtener jugadores:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchPlayers();
+    }, []);
 
   return (
     <div>
@@ -240,40 +261,28 @@ const Home = () => {
           {/* Contenedor de jugadores */}
           <div className="overflow-x-auto scrollbar-hide team-container">
             <div className="flex space-x-8 px-12 py-4">
-              {[
-                { num: 66, name: "Juan Diego", img: "/images/equipo/Juan.png" },
-                { num: 7, name: "Abisha", img: "/images/equipo/Abisha.png" },
-                { num: 3, name: "Alexander", img: "/images/equipo/Alex.jpg" },
-                { num: 14, name: "Ian", img: "/images/equipo/Ian.jpg" },
-                { num: 4, name: "Capy", img: "/images/mendez.png" },
-                { num: 11, name: "Kamil", img: "/images/equipo/Kamil.jpg" },
-                { num: 9, name: "Bruno", img: "/images/equipo/Bruno.png" },
-                { num: 99, name: "Omar", img: "/images/equipo/Omar.png" },
-                { num: 30, name: "Dani", img: "/images/equipo/mendez.png" },
-                { num: 14, name: "Edgar", img: "/images/equipo/mendez.png" },
-                { num: 12, name: "Leo", img: "/images/equipo/Leo.png" },
-                { num: 13, name: "Iker", img: "/images/equipo/Iker.jpeg" },
-                { num: 44, name: "Alex", img: "/images/equipo/Alex.png" },
-                { num: 14, name: "Oswaldo", img: "/images/equipo/Oswaldo.png" },
-              ].map((player, index) => (
+              {loading ? (
+              <p className="text-white text-center">Cargando jugadores...</p>
+            ) : (
+              players.map((player, index) => (
+                <Link to={`/jugador/${player.id}`} key={player.id}>
                 <div
-                  key={index}
                   className="min-w-[310px] bg-neutral-900/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex flex-col items-center text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-neutral-800/90 border-2 border-neutral-800/50 hover:border-[#f4a244]/30"
                 >
                   {/* Imagen del jugador */}
                   <div className="w-76 h-80 flex items-center justify-center relative">
                     <img
-                      src={player.img}
-                      alt={player.name}
+                      src={player.fotoPerfil}
+                      alt={player.nombre}
                       className="w-full h-full object-cover object-center rounded-lg"
                     />
                     <div className="absolute inset-0 bg-[#23878e]/10 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
                   </div>
 
                   {/* Número y nombre del jugador */}
-                  <h3 className="text-[#f4a244] text-5xl font-bold mt-4">{player.num}</h3>
+                  <h3 className="text-[#f4a244] text-5xl font-bold mt-4">{player.numero}</h3>
                   <p className="text-gray-300 text-xl uppercase font-semibold tracking-wide mt-2">
-                    {player.name}
+                    {player.sobrenombre}
                   </p>
 
 
@@ -282,7 +291,9 @@ const Home = () => {
                     Ver perfil
                   </button> */}
                 </div>
-              ))}
+                </Link>
+              )
+            ))}
             </div>
           </div>
 

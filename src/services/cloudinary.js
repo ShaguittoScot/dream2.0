@@ -1,5 +1,10 @@
-export const CLOUD_NAME = "dyfx2br3h"; // Agrega tu Cloud Name de Cloudinary
-export const UPLOAD_PRESET = "frontend_upload"; // Usa el preset configurado en Cloudinary
+//export const CLOUD_NAME = "dyfx2br3h"; // Agrega tu Cloud Name de Cloudinary
+//export const UPLOAD_PRESET = "frontend_upload"; // Usa el preset configurado en Cloudinary
+
+
+export const CLOUD_NAME = import.meta.env.VITE_CLOUD_NAME;
+export const UPLOAD_PRESET = import.meta.env.VITE_UPLOAD_PRESET;
+
 
 export const subirImagenACloudinary = async (imagen) => {
   if (!imagen) return "";

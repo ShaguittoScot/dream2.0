@@ -184,8 +184,56 @@ const FormularioJugadores = () => {
           {agregando ? "Agregando..." : "Agregar Jugador"}
         </button>
       </div>
+      {/* Sección para mostrar los jugadores almacenados */}
+      <div className="bg-gray-900 p-6 rounded-xl">
+        <h2 className="text-xl font-semibold text-blue-400 mb-4">Jugadores Registrados</h2>
+
+        {cargando ? (
+          <p className="text-white">Cargando jugadores...</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-white border border-gray-700">
+              <thead>
+                <tr className="bg-gray-800 text-left">
+                  <th className="p-3 border border-gray-700">#</th>
+                  <th className="p-3 border border-gray-700">Nombre</th>
+                  <th className="p-3 border border-gray-700">Equipo</th>
+                  <th className="p-3 border border-gray-700">Número</th>
+                  <th className="p-3 border border-gray-700">Foto Perfil</th>
+                  <th className="p-3 border border-gray-700">Foto Cancha</th>
+                </tr>
+              </thead>
+              <tbody>
+                {jugadores.map((jugador, index) => (
+                  <tr key={jugador.id} className="border-b border-gray-700 hover:bg-gray-800 transition">
+                    <td className="p-3">{index + 1}</td>
+                    <td className="p-3">{jugador.nombre}</td>
+                    <td className="p-3">{jugador.equipo}</td>
+                    <td className="p-3">{jugador.numero}</td>
+                    <td className="p-3">
+                      {jugador.fotoPerfil ? (
+                        <img src={jugador.fotoPerfil} alt="Foto Perfil" className="w-12 h-12 object-cover rounded-lg" />
+                      ) : (
+                        "Sin foto"
+                      )}
+                    </td>
+                    <td className="p-3">
+                      {jugador.fotoEnCancha ? (
+                        <img src={jugador.fotoEnCancha} alt="Foto Cancha" className="w-12 h-12 object-cover rounded-lg" />
+                      ) : (
+                        "Sin foto"
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
 export default FormularioJugadores;
+

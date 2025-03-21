@@ -7,7 +7,7 @@ import Jugadores from "./pages/Jugadores";
 import AuthPage from "./components/admin/login.jsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import ProtectedRoute from "./components/ProtectedRoute";
-
+import PlayerDetail from "./pages/PlayerDetail.jsx"
 const App = () => {
   return (
     <Router>
@@ -17,6 +17,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/jugadores" element={<Jugadores />} />
+          <Route path="/jugador/:id" element={<PlayerDetail />} />
           
           {/* Página de Login */}
           <Route path="/administracion" element={<AuthPage />} />
