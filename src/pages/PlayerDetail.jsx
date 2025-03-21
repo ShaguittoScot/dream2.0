@@ -48,28 +48,25 @@ const BasketballProfile = () => {
 
   return (
     <div className="bg-white min-h-screen text-gray-800 font-sans">
-
       {/* *************** INICIO BANNER SUPERIOR *************** */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="w-full h-[560px] md:h-[600px] relative overflow-hidden shadow-2xl"
+        className="w-full h-[360px] sm:h-[460px] md:h-[560px] lg:h-[600px] relative overflow-hidden shadow-2xl"
       >
         <img
           src={player.fotoEnCancha}
           alt="Banner del jugador"
           className="w-full h-full object-cover object-center brightness-90"
         />
-
-        {/* Overlay degradado */}
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent" />
-
-        {/* Texto del banner */}
-        <div className="absolute bottom-0 left-0 right-0 px-8 pb-12 pt-24">
-          <div className="max-w-7xl mx-auto text-white">
-            <h2 className="text-6xl font-black tracking-tight opacity-95">
+        <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-8 pb-8 sm:pb-12 pt-16 sm:pt-24">
+          <div className="max-w-7xl mx-auto text-white text-center sm:text-left">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight opacity-95">
+              {player.nombre}
             </h2>
-            <p className="text-2xl font-medium mt-3 opacity-90">
+            <p className="text-lg sm:text-2xl font-medium mt-2 sm:mt-3 opacity-90">
+              {player.descripcion}
             </p>
           </div>
         </div>
@@ -77,68 +74,68 @@ const BasketballProfile = () => {
       {/* *************** FIN BANNER SUPERIOR *************** */}
 
       {/* *************** INICIO CONTENIDO PRINCIPAL *************** */}
-      <div className="px-8">
+      <div className="px-4 sm:px-8">
 
-
-        {/* ********** INICIO HEADER DEL JUGADOR ********** */}
-        <div className="relative z-20 px-8 -mt-36 md:-mt-44">
+        {/* HEADER DEL JUGADOR */}
+        <div className="relative z-20 -mt-28 sm:-mt-36 md:-mt-44">
           <motion.header
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-gray-100/80 w-full md:w-4/5 lg:w-3/5 mx-auto"
+            className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100/80 w-full sm:w-4/5 lg:w-3/5 mx-auto"
           >
-            <div className="flex items-start gap-8">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8">
               {/* Foto del jugador */}
               <div className="relative">
                 <img
                   src={player.fotoPerfil}
                   alt="Perfil"
-                  className="w-40 h-52 object-cover rounded-xl shadow-lg border-[0.5px] border-gray-200/80 transform transition-transform hover:scale-105"
+                  className="w-32 h-40 sm:w-40 sm:h-52 object-cover rounded-xl shadow-lg border border-gray-200/80 transform transition-transform hover:scale-105"
                 />
-                <div className="absolute -bottom-4 right-4 bg-white px-3 py-1 rounded-full shadow-md border border-gray-100 text-lg font-medium">
+                <div className="absolute -bottom-3 sm:-bottom-4 right-2 sm:right-4 bg-white px-3 py-1 rounded-full shadow-md border border-gray-100 text-lg font-medium">
                   #{player.numero}
                 </div>
               </div>
 
               {/* Información del jugador */}
-              <div className="flex-1 space-y-3">
-                <div className="flex items-baseline gap-4">
-                  <h1 className="text-4xl font-bold text-gray-900 tracking-tight">
+              <div className="flex-1 space-y-3 text-center sm:text-left">
+                <div className="flex flex-col sm:flex-row items-center sm:items-baseline gap-2 sm:gap-4">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
                     {player.nombre.toUpperCase()}
                   </h1>
-                  <h2 className="text-2xl text-[#FF6B35] font-medium italic">
+                  <h2 className="text-lg sm:text-2xl text-[#FF6B35] font-medium italic">
                     "{player.sobrenombre}"
                   </h2>
                 </div>
 
-                <h3 className="text-xl text-gray-600 font-semibold mb-4">
+                <h3 className="text-lg sm:text-xl text-gray-600 font-semibold">
                   {player.descripcion}
                 </h3>
 
                 {/* Badges informativos */}
-                <div className="flex flex-wrap gap-3 items-center">
+                <div className="flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-3">
                   <span className="bg-gray-50 px-4 py-2 rounded-full text-base font-medium text-gray-700 border border-gray-200">
                     {player.posicion}
                   </span>
 
-                  <div className="flex items-center space-x-2 text-gray-500">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span className="flex items-center space-x-1 text-gray-500">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                     <span>{player.equipo}</span>
-                  </div>
+                  </span>
 
-                  <div className="flex items-center space-x-2 text-gray-500">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span className="flex items-center space-x-1 text-gray-500">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     <span>Edad: {player.edad}</span>
-                  </div>
+                  </span>
                 </div>
               </div>
             </div>
           </motion.header>
         </div>
+
         {/* ********** FIN HEADER DEL JUGADOR ********** */}
 
 
