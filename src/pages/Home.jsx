@@ -144,8 +144,6 @@ const Home = () => {
         <h2 className="text-center text-5xl font-arvo font-bold text-white mb-12 animate-fade-in">
           PRÓXIMOS PARTIDOS
         </h2>
-
-        {/* Contenedor tipo carrusel */}
         <div className="max-w-6xl mx-auto px-6 relative">
           <div className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth space-x-6 pb-6">
             {partidos.map((game, index) => (
@@ -154,10 +152,9 @@ const Home = () => {
                 className="flex-shrink-0 w-80 bg-gradient-to-br from-orange-500/90 to-red-600/90 backdrop-blur-md border-2 border-orange-400/30 rounded-2xl shadow-2xl transform transition-transform hover:scale-105 hover:shadow-[0_10px_30px_rgba(255,100,0,0.6)] duration-300 cursor-pointer snap-center"
               >
                 <div className="p-8 flex flex-col justify-center items-center text-center relative">
-                  {/* Efecto de resplandor en hover */}
                   <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500 bg-orange-500/20 blur-2xl rounded-lg"></div>
 
-                  {/* Icono de estadio */}
+
                   <div className="mb-6">
                     <svg
                       className="w-12 h-12 text-orange-200"
@@ -175,13 +172,12 @@ const Home = () => {
                     </svg>
                   </div>
 
-                  {/* Información del partido */}
+              
                   <h3 className="text-2xl font-bold text-white mb-2">
                     {game.equipo1} vs. {game.equipo2}
                   </h3>
                   <p className="text-orange-100 text-lg font-medium">{game.fecha}</p>
 
-                  {/* Botón de "Ver más" */}
                   <button className="mt-6 px-6 py-2 bg-white/10 backdrop-blur-sm border-2 border-orange-200/20 text-orange-100 font-semibold rounded-lg hover:bg-white/20 hover:border-orange-200/40 transition-all duration-300">
                     Ver detalles
                   </button>
@@ -338,14 +334,15 @@ const Home = () => {
       {/* End Team Template */}
 
       {/* Galería */}
-      <section className="gallery bg-gray-100">
+      <section className="gallery bg-gray-100 overflow-hidden w-full">
         <Gallery images={images} />
       </section>
 
       {/* Videos Destacados */}
-      <section className="videos">
+      <section className="videos overflow-hidden w-full">
         <VideoGallery videos={videos} />
       </section>
+      
 
       {/* Footer */}
       <Footer />
