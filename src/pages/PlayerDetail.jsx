@@ -55,7 +55,7 @@ const BasketballProfile = () => {
         className="w-full h-[360px] sm:h-[460px] md:h-[560px] lg:h-[600px] relative overflow-hidden shadow-2xl"
       >
         <img
-          src={player.fotoEnCancha}
+          src={player.fotoParaElBanner}
           alt="Banner del jugador"
           className="w-full h-full object-cover object-center brightness-90"
         />

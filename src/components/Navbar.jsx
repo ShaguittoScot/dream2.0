@@ -78,7 +78,7 @@ const Navbar = () => {
               </button>
             ) : (
               <Link
-                to="/administracion"
+                to="/login"
                 className="text-gray-100 no-underline hover:text-orange-400 transition-all duration-300 font-arvo"
               >
                 Acceso
