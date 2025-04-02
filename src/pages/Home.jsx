@@ -1,27 +1,81 @@
 import React, { useState, useEffect } from 'react';
-import Footer from '../components/Footer';
-import Gallery from "../components/Gallery";
+import PhotoGallery from "../components/Gallery";
 import VideoGallery from '../components/VideoGalery.jsx';
 import { db } from "../db/conexiondb.js";
 import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
 
-const images = Array.from({ length: 15 }).map(
-  (_, index) => `/images/galeria/galeria (${index + 1}).jpg`
-);
-
-// Generar videos dinámicamente
-const videos = Array.from({ length: 17 }).map((_, index) => ({
-  url: `/videos/video (${index + 1}).mp4`,
-  title: `Video ${index + 1}`,
-  date: `${Math.floor(Math.random() * 30) + 1}d`,
-  category: index % 2 === 0 ? "game" : "players",
-  description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
-}));
 
 const Home = () => {
-  const [partidos, setPartidos] = useState([]);
 
+
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    const obtenerVideos = async () => {
+      try {
+        const galeriaRef = collection(db, "galeria");
+        const querySnapshot = await getDocs(galeriaRef);
+
+        console.log("Documentos obtenidos de Firestore:", querySnapshot.docs.map(doc => doc.data())); // Ver datos originales
+
+        const videosFiltrados = querySnapshot.docs
+          .map((doc, index) => ({
+            id: doc.id,
+            ...doc.data(),
+            category: index % 2 === 0 ? "game" : "players",
+          }))
+          .filter(item => item.tipo === "video");
+
+        console.log("Videos filtrados:", videosFiltrados); // Ver datos después del filtro
+
+        setVideos(videosFiltrados);
+      } catch (error) {
+        console.error("Error al obtener videos:", error);
+      }
+    };
+
+    obtenerVideos();
+  }, []);
+
+
+  const [photos, setPhotos] = useState([]);
+
+  useEffect(() => {
+    const obtenerImagenes = async () => {
+      try {
+        const galeriaRef = collection(db, "galeria");
+        const querySnapshot = await getDocs(galeriaRef);
+
+        console.log("Documentos obtenidos de Firestore:", querySnapshot.docs.map(doc => doc.data()));
+
+        const ImagenesFiltradas = querySnapshot.docs
+          .map((doc, index) => ({
+            id: doc.id,
+            ...doc.data(),
+            category: index % 2 === 0 ? "game" : "players",
+          }))
+          .filter(item => item.tipo === "imagen");
+
+        console.log("Imagenes filtradas:", ImagenesFiltradas);
+
+        setPhotos(ImagenesFiltradas);
+      } catch (error) {
+        console.error("Error al obtener Imagenes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    obtenerImagenes();
+  }, []);
+
+  useEffect(() => {
+    console.log("Estado actualizado de photos:", photos);
+  }, [photos]);
+
+
+  const [partidos, setPartidos] = useState([]);
   // Leer partidos desde Firebase
   useEffect(() => {
     const fetchPartidos = async () => {
@@ -307,36 +361,16 @@ const Home = () => {
             </svg>
           </button>
         </div>
-
-        {/* Botón para ver más */}
-        <div className="text-center mt-16">
-          <a
-            href="#"
-            className="inline-flex items-center justify-center text-white font-semibold text-lg bg-gradient-to-r from-[#23878e] to-[#d24d33] px-8 py-4 rounded-full transition-all duration-300 hover:shadow-xl hover:scale-105"
-          >
-            VER TODO EL EQUIPO
-            <svg
-              className="w-6 h-6 ml-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              ></path>
-            </svg>
-          </a>
-        </div>
       </section>
       {/* End Team Template */}
 
       {/* Galería */}
-      <section className="gallery bg-gray-100 overflow-hidden w-full">
-        <Gallery images={images} />
+      <section className="imagenes overflow-hidden w-full">
+        {photos && photos.length > 0 ? (
+          <PhotoGallery photos={photos} />
+        ) : (
+          <p>Cargando imágenes...</p>
+        )}
       </section>
 
       {/* Videos Destacados */}

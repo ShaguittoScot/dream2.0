@@ -11,6 +11,7 @@ const BasketballProfile = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchPlayer = async () => {
       const playerRef = doc(db, "jugadores", id);
       const playerSnap = await getDoc(playerRef);
@@ -52,7 +53,7 @@ const BasketballProfile = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="w-full h-[360px] sm:h-[460px] md:h-[560px] lg:h-[600px] relative overflow-hidden shadow-2xl"
+        className="relative w-full h-[300px] sm:h-[400px] lg:h-[500px]" // Reducir alturas
       >
         <img
           src={player.fotoParaElBanner}

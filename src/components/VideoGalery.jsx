@@ -1,139 +1,248 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
-const VideoGallery = ({ videos }) => {
+const VideoGallery = ({ videos = [] }) => {
   const [selectedVideo, setSelectedVideo] = useState(0);
-  const [showText, setShowText] = useState(true); // Estado para controlar la visibilidad del texto
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef(null);
   const scrollRef = useRef(null);
 
-  const scrollLeft = () => {
+  const categorias = [
+    "all", "general", "entrenamiento", "partido",
+    "entrevista", "detrasEscenas", "eventos", "sponsors"
+  ];
+
+  const filteredVideos = selectedCategory === "all" 
+    ? videos 
+    : videos.filter(video => video.categoria === selectedCategory);
+
+  // Auto-scroll al video seleccionado
+  useEffect(() => {
+    if (scrollRef.current && filteredVideos.length > 0) {
+      const container = scrollRef.current;
+      const selectedElement = container.children[selectedVideo];
+      
+      if (selectedElement) {
+        const containerWidth = container.offsetWidth;
+        const elementLeft = selectedElement.offsetLeft;
+        const elementWidth = selectedElement.offsetWidth;
+        
+        container.scrollTo({
+          left: elementLeft - (containerWidth / 2) + (elementWidth / 2),
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [selectedVideo, filteredVideos]);
+
+  const scrollGallery = (direction) => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -250, behavior: "smooth" });
+      scrollRef.current.scrollBy({ 
+        left: direction * 300, 
+        behavior: "smooth" 
+      });
     }
   };
 
-  const scrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 250, behavior: "smooth" });
-    }
-  };
-
-  // Función para navegar al siguiente video
   const nextVideo = () => {
-    setSelectedVideo((prev) => (prev + 1) % videos.length);
+    setSelectedVideo(prev => (prev + 1) % filteredVideos.length);
+    setIsPlaying(true);
+  };
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
   };
 
   return (
-    <section className="py-16 bg-black w-full px-6 relative">
-  {/* Efecto de fondo sutil */}
-  <div className="absolute inset-0 opacity-20 pointer-events-none">
-    <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-orange-500 blur-[150px] opacity-40 animate-pulse-slow"></div>
-    <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-red-600 blur-[150px] opacity-40 animate-pulse-slow"></div>
-  </div>
-
-  {/* Título con efecto de texto brillante */}
-  <h2 className="text-center text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-16 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-red-500 font-arvo tracking-wide">
-    VIDEOS
-  </h2>
-
-  {/* Contenedor principal del video y detalles */}
-  <div className="relative flex flex-col lg:flex-row w-full bg-black max-w-6xl mx-auto rounded-2xl shadow-2xl overflow-hidden">
-    {/* Sección del Video Principal */}
-    <div
-      className="relative w-full lg:w-2/3 bg-black"
-      onMouseEnter={() => setShowText(false)}
-      onMouseLeave={() => setShowText(true)}
-    >
-      <div className="flex justify-center items-center bg-black">
-        <video
-          src={videos[selectedVideo].url}
-          className="object-contain w-full h-[300px] sm:h-[400px] lg:h-[500px] mx-auto rounded-2xl"
-          controls
-          playsInline
-          preload="auto"
-        />
+    <section className="py-16 bg-black w-full px-4 sm:px-6 relative overflow-hidden">
+      {/* Efecto de fondo mejorado */}
+      <div className="absolute inset-0 opacity-15 pointer-events-none">
+        <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-[#23878e] blur-[180px] opacity-30 animate-pulse-slow"></div>
+        <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-[#d24d33] blur-[180px] opacity-30 animate-pulse-slow"></div>
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-[#f4a244] blur-[120px] opacity-20 animate-pulse-slow-delayed"></div>
       </div>
-    </div>
 
-    {/* Panel de Información */}
-    <div className="w-full lg:w-1/3 bg-black text-white p-4 flex flex-col justify-between">
-      <div>
-        <h4 className="text-2xl font-bold mb-2">{videos[selectedVideo].title}</h4>
-        <p className="text-sm mb-4">{videos[selectedVideo].duration}</p>
-        <p className="text-gray-300 text-sm">{videos[selectedVideo].description}</p>
+      {/* Título con gradiente mejorado */}
+      <h2 className="text-center text-6xl font-extrabold mb-16 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-red-500 font-arvo tracking-wide">
+        VIDEOS
+      </h2>
+
+      {/* Filtros mejorados */}
+      <div className="flex overflow-x-auto pb-4 mb-8 scrollbar-hide max-w-6xl mx-auto">
+        <div className="flex space-x-2 mx-auto px-2">
+          {categorias.map(categoria => (
+            <button
+              key={categoria}
+              onClick={() => {
+                setSelectedCategory(categoria);
+                setSelectedVideo(0);
+              }}
+              className={`px-4 py-2 rounded-full whitespace-nowrap transition-all ${
+                selectedCategory === categoria
+                  ? "bg-gradient-to-r from-[#23878e] to-[#d24d33] text-white shadow-md"
+                  : "bg-neutral-800 text-gray-300 hover:bg-neutral-700"
+              }`}
+            >
+              {categoria === "all" ? "Todos" : categoria}
+            </button>
+          ))}
+        </div>
       </div>
-      {/* Flecha para navegar entre videos */}
-      <div className="flex justify-end mt-4">
-        <button
-          onClick={nextVideo}
-          className="text-white font-bold"
+
+      {/* Contenedor principal con mejoras visuales */}
+      <div className="relative flex flex-col lg:flex-row w-full bg-neutral-900/80 backdrop-blur-sm max-w-6xl mx-auto rounded-2xl shadow-2xl overflow-hidden">
+        {/* Sección del video */}
+        <div className="relative w-full lg:w-2/3 bg-black">
+          <div className="relative aspect-video">
+            {filteredVideos.length > 0 ? (
+              <>
+                <video
+                  ref={videoRef}
+                  src={filteredVideos[selectedVideo]?.url}
+                  className="object-contain w-full h-[300px] sm:h-[400px] lg:h-[500px] mx-auto rounded-2xl"
+                  controls
+                  playsInline
+                  autoPlay={isPlaying}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  onClick={togglePlay}
+                />
+                {!isPlaying && (
+                  <button 
+                    onClick={togglePlay}
+                    className="absolute inset-0 flex items-center justify-center w-full h-full group"
+                  >
+                    <div className="w-20 h-20 bg-black/50 rounded-full flex items-center justify-center group-hover:bg-[#f4a244]/20 transition-all duration-300">
+                      <svg className="w-12 h-12 text-[#f4a244]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                  </button>
+                )}
+              </>
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-400">
+                No hay videos en esta categoría
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Panel de información mejorado */}
+        <div className="w-full lg:w-1/3 bg-neutral-900/70 text-white p-6 flex flex-col">
+          <div className="mb-4">
+            <h4 className="text-2xl font-bold mb-2 text-[#f4a244]">
+              {filteredVideos[selectedVideo]?.descripcion || "Sin título"}
+            </h4>
+            <div className="w-12 h-0.5 bg-gradient-to-r from-[#23878e] to-[#d24d33] mb-3"></div>
+            <p className="text-sm text-gray-300 mb-1">
+              <span className="font-medium">Fecha:</span> {filteredVideos[selectedVideo]?.fechaSubida?.seconds ? 
+                new Date(filteredVideos[selectedVideo].fechaSubida.seconds * 1000).toLocaleDateString() : 
+                "No disponible"}
+            </p>
+            <p className="text-sm text-gray-300">
+              <span className="font-medium">Categoría:</span> {filteredVideos[selectedVideo]?.categoria || "general"}
+            </p>
+          </div>
+          
+          <div className="mt-auto pt-4 border-t border-neutral-700/50">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-400">
+                {selectedVideo + 1} / {filteredVideos.length}
+              </span>
+              <button 
+                onClick={nextVideo}
+                className="flex items-center space-x-1 bg-[#f4a244]/10 hover:bg-[#f4a244]/20 text-[#f4a244] px-4 py-2 rounded-full transition-all"
+              >
+                <span>Siguiente</span>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Miniaturas con mejor navegación */}
+      <div className="relative mt-8 max-w-6xl mx-auto">
+        <button 
+          onClick={() => scrollGallery(-1)} 
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-neutral-900/80 hover:bg-[#f4a244]/10 backdrop-blur-sm p-3 rounded-full shadow-lg border border-neutral-700/50 hover:border-[#f4a244]/30 transition-all"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3.98047 3.51001C1.43047 4.39001 0.980469 9.09992 0.980469 12.4099C0.980469 15.7199 1.41047 20.4099 3.98047 21.3199C6.69047 22.2499 14.9805 16.1599 14.9805 12.4099C14.9805 8.65991 6.69047 2.58001 3.98047 3.51001Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M23 5.92004C23 4.53933 21.8807 3.42004 20.5 3.42004C19.1193 3.42004 18 4.53933 18 5.92004V18.92C18 20.3008 19.1193 21.42 20.5 21.42C21.8807 21.42 23 20.3008 23 18.92V5.92004Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <svg className="w-5 h-5 text-[#f4a244]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <div 
+          ref={scrollRef}
+          className="flex space-x-4 overflow-x-auto scrollbar-hide scroll-smooth px-10"
+        >
+          {filteredVideos.length > 0 ? (
+            filteredVideos.map((video, index) => (
+              <div 
+                key={index}
+                onClick={() => {
+                  setSelectedVideo(index);
+                  setIsPlaying(true);
+                }}
+                className={`relative flex-shrink-0 w-48 sm:w-56 rounded-xl overflow-hidden cursor-pointer transition-all ${
+                  selectedVideo === index 
+                    ? "ring-2 ring-[#f4a244] scale-105" 
+                    : "opacity-90 hover:opacity-100 hover:scale-[1.03]"
+                }`}
+              >
+                <video
+                  src={video.url}
+                  className="w-full h-28 sm:h-32 object-cover"
+                  muted
+                  playsInline
+                />
+                <div className={`absolute inset-0 flex items-end p-2 bg-gradient-to-t ${
+                  selectedVideo === index 
+                    ? "from-black/70 to-transparent" 
+                    : "from-black/50 to-transparent"
+                }`}>
+                  <p className="text-white text-xs font-medium truncate w-full">
+                    {video.descripcion}
+                  </p>
+                </div>
+                {selectedVideo === index && (
+                  <div className="absolute top-2 right-2 bg-[#f4a244] text-black text-xs px-2 py-1 rounded-full">
+                    <svg className="w-3 h-3 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14M5 12l4-4m-4 4l4 4" />
+                    </svg>
+                    Reproduciendo
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="w-full text-center py-8 text-gray-400">
+              No hay videos disponibles
+            </div>
+          )}
+        </div>
+
+        <button 
+          onClick={() => scrollGallery(1)} 
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-neutral-900/80 hover:bg-[#f4a244]/10 backdrop-blur-sm p-3 rounded-full shadow-lg border border-neutral-700/50 hover:border-[#f4a244]/30 transition-all"
+        >
+          <svg className="w-5 h-5 text-[#f4a244]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
           </svg>
         </button>
       </div>
-    </div>
-  </div>
-
-  {/* Botones de Navegación y Lista de Videos */}
-  <div className="relative mt-8 flex items-center">
-    <button
-      onClick={scrollLeft}
-      className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-neutral-900/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-neutral-800/90 border-2 border-neutral-800/50 hover:border-[#f4a244]/30 z-10"
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16.1795 3.26875C15.7889 2.87823 15.1558 2.87823 14.7652 3.26875L8.12078 9.91322C6.94952 11.0845 6.94916 12.9833 8.11996 14.155L14.6903 20.7304C15.0808 21.121 15.714 21.121 16.1045 20.7304C16.495 20.3399 16.495 19.7067 16.1045 19.3162L9.53246 12.7442C9.14194 12.3536 9.14194 11.7205 9.53246 11.33L16.1795 4.68297C16.57 4.29244 16.57 3.65928 16.1795 3.26875Z" fill="#f4a244" />
-      </svg>
-    </button>
-
-    {/* Lista de Videos Pequeños */}
-    <div
-      ref={scrollRef}
-      className="flex space-x-2 overflow-x-auto scrollbar-hide scroll-smooth px-6 w-full"
-      style={{ scrollBehavior: "smooth" }}
-    >
-      {videos.map((video, index) => (
-        <div
-          key={index}
-          className={`relative rounded-2xl overflow-hidden cursor-pointer shadow-lg transition-all flex-shrink-0 w-56 sm:w-64 hover:scale-105 ${selectedVideo === index ? "border-2 border-orange-500" : "border-2 border-transparent"
-            }`}
-          onClick={() => setSelectedVideo(index)}
-        >
-          <video
-            src={video.url}
-            className="w-full h-32 sm:h-40 object-cover rounded-2xl"
-            muted
-            playsInline
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <button className="text-white shadow-md">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20.4086 9.35258C22.5305 10.5065 22.5305 13.4935 20.4086 14.6474L7.59662 21.6145C5.53435 22.736 3 21.2763 3 18.9671L3 5.0329C3 2.72368 5.53435 1.26402 7.59661 2.38548L20.4086 9.35258Z" stroke="#f4a244" strokeWidth="1.5"/>
-              </svg>
-            </button>
-          </div>
-          <div className="absolute bottom-0 text-white p-4 w-full">
-            <p className="text-sm font-semibold">{video.title}</p>
-            <p className="text-xs text-gray-300">
-              {video.date} • {video.category}
-            </p>
-          </div>
-        </div>
-      ))}
-    </div>
-
-    <button
-      onClick={scrollRight}
-      className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-neutral-900/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-neutral-800/90 border-2 border-neutral-800/50 hover:border-[#f4a244]/30 z-10"
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M7.8205 3.26875C8.2111 2.87823 8.8442 2.87823 9.2348 3.26875L15.8792 9.91322C17.0505 11.0845 17.0508 12.9833 15.88 14.155L9.3097 20.7304C8.9192 21.121 8.286 21.121 7.8955 20.7304C7.505 20.3399 7.505 19.7067 7.8955 19.3162L14.4675 12.7442C14.8581 12.3536 14.8581 11.7205 14.4675 11.33L7.8205 4.68297C7.43 4.29244 7.43 3.65928 7.8205 3.26875Z" fill="#f4a244" />
-      </svg>
-    </button>
-  </div>
-</section>
-
+    </section>
   );
 };
 

@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer.jsx";
 import Home from "./pages/Home";
-import Jugadores from "./pages/Jugadores";
 import AuthPage from "./components/admin/login.jsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -19,7 +18,7 @@ const App = () => {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/jugadores" element={<Jugadores />} />
+      
           <Route path="/jugador/:id" element={<PlayerDetail />} />
 
           {/* Página de Login */}

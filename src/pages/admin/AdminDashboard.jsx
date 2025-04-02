@@ -54,7 +54,7 @@ const AdminDashboard = () => {
               setMenuAbierto(false); // Cerrar el menú en móviles al seleccionar una opción
             }}
           >
-            🏀 Administrar Equipo
+            🏀 Administrar Multimedia del Equipo
           </li>
         </ul>
       </aside>
