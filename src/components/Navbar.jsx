@@ -136,7 +136,7 @@ const Navbar = () => {
               </button>
             ) : (
               <Link
-                to="/administracion"
+                to="/login"
                 onClick={toggleMenu}
                 className="text-white text-2xl no-underline hover:text-orange-400"
               >

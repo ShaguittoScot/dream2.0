@@ -279,85 +279,93 @@ const Home = () => {
 
 
       {/* Team Template */}
+      {/* Team Section - Versión mejorada manteniendo estructura */}
       <section className="team-roster py-20 bg-black relative overflow-hidden">
-        {/* Efecto de fondo sutil con colores del logo */}
+        {/* Efectos de fondo mejorados */}
         <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-[#23878e] blur-[150px] opacity-40"></div>
-          <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-[#d24d33] blur-[150px] opacity-40"></div>
+          <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-[#23878e] blur-[150px] opacity-40 animate-float-slow"></div>
+          <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-[#d24d33] blur-[150px] opacity-40 animate-float-slow-delayed"></div>
         </div>
 
-        {/* Título con efecto de texto brillante usando colores del logo */}
-        <h2 className="text-center text-6xl font-extrabold mb-16 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-red-500 font-arvo tracking-wide">
-          EQUIPO
+        {/* Título con animación sutil */}
+        <h2 className="text-center text-6xl font-extrabold mb-16 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-red-500 font-arvo tracking-wide animate-fade-in">
+          PLANTILLA
         </h2>
 
-        {/* Contenedor de jugadores con scroll horizontal */}
-        <div className="relative">
-          {/* Botón de navegación izquierda */}
+        {/* Contenedor de jugadores con mejor navegación */}
+        <div className="relative max-w-7xl mx-auto">
+          {/* Flecha izquierda */}
           <button
             onClick={() => {
               const container = document.querySelector('.team-container');
               container.scrollBy({ left: -300, behavior: 'smooth' });
             }}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-neutral-900/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-white/20 border-2 border-neutral-800/50 hover:border-[#f4a244]/30 z-10"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-neutral-900/80 backdrop-blur-sm p-4 rounded-full shadow-lg hover:bg-[#f4a244]/20 border-2 border-neutral-800/50 hover:border-[#f4a244]/30 z-10 transition-all duration-300"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M16.1795 3.26875C15.7889 2.87823 15.1558 2.87823 14.7652 3.26875L8.12078 9.91322C6.94952 11.0845 6.94916 12.9833 8.11996 14.155L14.6903 20.7304C15.0808 21.121 15.714 21.121 16.1045 20.7304C16.495 20.3399 16.495 19.7067 16.1045 19.3162L9.53246 12.7442C9.14194 12.3536 9.14194 11.7205 9.53246 11.33L16.1795 4.68297C16.57 4.29244 16.57 3.65928 16.1795 3.26875Z" fill="#f4a244" />
+            <svg className="w-6 h-6 text-[#f4a244]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
 
-          {/* Contenedor de jugadores */}
-          <div className="overflow-x-auto scrollbar-hide team-container">
-            <div className="flex space-x-8 px-12 py-4">
+          {/* Lista de jugadores con skeleton loading */}
+          <div className="overflow-x-auto scrollbar-hide team-container px-12 py-4">
+            <div className="flex space-x-8 w-max">
               {loading ? (
-                <p className="text-white text-center">Cargando jugadores...</p>
-              ) : (
-                players.map((player, index) => (
-                  <Link to={`/jugador/${player.id}`} key={player.id} className="no-underline">
-                    <div
-                      className="min-w-[310px] bg-neutral-900/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex flex-col items-center text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-white/20 border-2 border-neutral-800/50 hover:border-[#f4a244]/30"
-                    >
-                      {/* Imagen del jugador */}
-                      <div
-                        className="flex items-center justify-center relative rounded-lg"
-                        style={{ width: "300px", height: "400px" }} // Ancho y largo establecidos
-                      >
+                // Skeleton loading (5 placeholders)
+                [...Array(5)].map((_, index) => (
+                  <div key={`skeleton-${index}`} className="min-w-[310px] bg-neutral-900/80 p-6 rounded-2xl shadow-lg flex flex-col items-center animate-pulse">
+                    <div className="w-full h-[400px] bg-neutral-800 rounded-lg"></div>
+                    <div className="h-12 w-16 bg-neutral-800 rounded-full mt-4"></div>
+                    <div className="h-6 w-3/4 bg-neutral-800 rounded mt-3"></div>
+                  </div>
+                ))
+              ) : players.length > 0 ? (
+                players.map((player) => (
+                  <Link to={`/jugador/${player.id}`} key={player.id} className="no-underline flex-shrink-0 hover:scale-105 transition-transform duration-300">
+                    <div className="min-w-[310px] bg-neutral-900/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex flex-col items-center text-center border-2 border-transparent hover:border-[#f4a244]/30 transition-all duration-300">
+                      {/* Imagen con efecto hover */}
+                      <div className="relative w-full h-[400px] rounded-lg overflow-hidden group">
                         <img
                           src={player.fotoPerfil}
                           alt={player.nombre}
-                          className="w-full h-full object-cover object-center rounded-lg"
+                          style={{ width: "300px", height: "400px" }} // Ancho y largo establecidos
+                          className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                          loading="lazy"
                         />
-                        <div className="absolute inset-0 bg-[#23878e]/10 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                          <p className="text-white text-sm translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                            {player.posicion}
+                          </p>
+                        </div>
                       </div>
 
-                      {/* Número y nombre del jugador */}
+                      {/* Información del jugador */}
                       <h3 className="text-[#f4a244] text-5xl font-bold mt-4">{player.numero}</h3>
                       <p className="text-gray-300 text-xl uppercase font-semibold tracking-wide mt-2">
-                        {player.sobrenombre}
+                        {player.apellido}
                       </p>
-
-
-                      {/* Botón de "Ver perfil" 
-                  <button className="mt-4 px-6 py-2 bg-orange-500/10 backdrop-blur-sm border-2 border-orange-500/20 text-orange-500 font-semibold rounded-lg hover:bg-orange-500/20 hover:border-orange-500/40 transition-all duration-300">
-                    Ver perfil
-                  </button> */}
+                      <p className="text-gray-400 text-sm mt-1">{player.nombre}</p>
                     </div>
                   </Link>
-                )
-                ))}
+                ))
+              ) : (
+                <div className="text-center w-full py-12">
+                  <p className="text-gray-400 text-xl">No hay jugadores disponibles</p>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Botón de navegación derecha */}
+          {/* Flecha derecha */}
           <button
             onClick={() => {
               const container = document.querySelector('.team-container');
               container.scrollBy({ left: 300, behavior: 'smooth' });
             }}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-neutral-900/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-neutral-800/90 border-2 border-neutral-800/50 hover:border-[#f4a244]/30 z-10"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-neutral-900/80 backdrop-blur-sm p-4 rounded-full shadow-lg hover:bg-[#f4a244]/20 border-2 border-neutral-800/50 hover:border-[#f4a244]/30 z-10 transition-all duration-300"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M7.8205 3.26875C8.2111 2.87823 8.8442 2.87823 9.2348 3.26875L15.8792 9.91322C17.0505 11.0845 17.0508 12.9833 15.88 14.155L9.3097 20.7304C8.9192 21.121 8.286 21.121 7.8955 20.7304C7.505 20.3399 7.505 19.7067 7.8955 19.3162L14.4675 12.7442C14.8581 12.3536 14.8581 11.7205 14.4675 11.33L7.8205 4.68297C7.43 4.29244 7.43 3.65928 7.8205 3.26875Z" fill="#f4a244" />
+            <svg className="w-6 h-6 text-[#f4a244]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </div>
@@ -366,11 +374,7 @@ const Home = () => {
 
       {/* Galería */}
       <section className="imagenes overflow-hidden w-full">
-        {photos && photos.length > 0 ? (
-          <PhotoGallery photos={photos} />
-        ) : (
-          <p>Cargando imágenes...</p>
-        )}
+        <PhotoGallery photos={photos} />
       </section>
 
       {/* Videos Destacados */}
