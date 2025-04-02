@@ -324,14 +324,27 @@ const Home = () => {
                   <Link to={`/jugador/${player.id}`} key={player.id} className="no-underline flex-shrink-0 hover:scale-105 transition-transform duration-300">
                     <div className="min-w-[310px] bg-neutral-900/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex flex-col items-center text-center border-2 border-transparent hover:border-[#f4a244]/30 transition-all duration-300">
                       {/* Imagen con efecto hover */}
-                      <div className="relative w-full h-[400px] rounded-lg overflow-hidden group">
+                      {/* Contenedor de imagen con relación de aspecto 3:4 fija */}
+                      <div className="relative w-full rounded-lg overflow-hidden group" style={{
+                        width: '100%',
+                        paddingBottom: '133.33%', /* 4/3 = 1.3333 (para relación 3:4) */
+                        height: 0 /* Necesario para que padding-bottom funcione */
+                      }}>
+                        {/* Imagen que mantiene relación 3:4 */}
                         <img
                           src={player.fotoPerfil}
                           alt={player.nombre}
-                          style={{ width: "300px", height: "400px" }} // Ancho y largo establecidos
-                          className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                          className="absolute top-0 left-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                           loading="lazy"
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            maxWidth: '300px', // Ancho máximo
+                            maxHeight: '400px' // Altura máxima
+                          }}
                         />
+
+                        {/* Overlay con información */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                           <p className="text-white text-sm translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                             {player.posicion}
