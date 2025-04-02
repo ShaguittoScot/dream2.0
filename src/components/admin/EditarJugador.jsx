@@ -4,29 +4,31 @@ import { obtenerJugadorPorId, editarJugador } from "../../db/jugadores";
 const EditarJugador = ({ jugadorId, onClose }) => {
   const [jugador, setJugador] = useState(null);
   const [cargando, setCargando] = useState(true);
+  const [nuevaFotoPerfil, setNuevaFotoPerfil] = useState(null);
+  const [nuevoBanner, setNuevoBanner] = useState(null);
+  const [nuevasImagenes, setNuevasImagenes] = useState([]);
 
   useEffect(() => {
-    console.log("Jugador ID recibido en EditarJugador:", jugadorId);
-
     const obtenerDatos = async () => {
       if (!jugadorId) return;
 
-      setCargando(true); // Mostrar "Cargando..." mientras se obtienen los datos
+      setCargando(true);
       try {
         const datos = await obtenerJugadorPorId(jugadorId);
-        console.log("Datos del jugador:", datos);
-
         if (datos) {
-          setJugador(datos); // Establecer los datos del jugador
+          // Convertir campos numéricos
+          datos.numero = Number(datos.numero);
+          datos.edad = Number(datos.edad);
+          setJugador(datos);
         } else {
-          setJugador(null); // Si no hay datos, establecer jugador en null
+          setJugador(null);
           console.error("No se encontraron datos del jugador.");
         }
       } catch (error) {
         console.error("Error obteniendo el jugador:", error);
-        setJugador(null); // En caso de error, establecer jugador en null
+        setJugador(null);
       }
-      setCargando(false); // Finalizar la carga
+      setCargando(false);
     };
 
     obtenerDatos();
@@ -34,29 +36,40 @@ const EditarJugador = ({ jugadorId, onClose }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setJugador({ ...jugador, [name]: value });
+    // Convertir campos numéricos
+    const convertedValue = name === 'numero' || name === 'edad' ? Number(value) : value;
+    setJugador({ ...jugador, [name]: convertedValue });
   };
 
   const handleActualizar = async () => {
-    const exito = await editarJugador(jugadorId, jugador);
-    if (exito) {
-      alert("Jugador actualizado correctamente");
-      onClose(); // Cerrar el modal o la vista de edición
-    } else {
-      alert("Hubo un error al actualizar el jugador.");
+    try {
+      const exito = await editarJugador(
+        jugadorId,
+        jugador,
+        nuevaFotoPerfil,
+        nuevoBanner,
+        nuevasImagenes
+      );
+      
+      if (exito) {
+        alert("Jugador actualizado correctamente");
+        onClose();
+      } else {
+        throw new Error('Error en la respuesta del servidor');
+      }
+    } catch (error) {
+      console.error('Error detallado:', error);
+      alert(`Error al actualizar: ${error.message}`);
     }
   };
 
-  // Renderizar "Cargando..." mientras se obtienen los datos
   if (cargando) return <p>Cargando...</p>;
-
-  // Renderizar "Error: No se encontró el jugador." si no hay datos
   if (!jugador) return <p>Error: No se encontró el jugador.</p>;
 
-  // Renderizar el formulario de edición si hay datos
   return (
     <div className="modal">
       <h2>Editar Jugador</h2>
+      
       <input
         type="text"
         name="nombre"
@@ -64,13 +77,50 @@ const EditarJugador = ({ jugadorId, onClose }) => {
         onChange={handleChange}
         placeholder="Nombre"
       />
+      
       <input
-        type="text"
-        name="sobrenombre"
-        value={jugador.sobrenombre || ""}
+        type="number"
+        name="numero"
+        value={jugador.numero || ""}
         onChange={handleChange}
-        placeholder="Sobrenombre"
+        placeholder="Número"
       />
+      
+      <input
+        type="number"
+        name="edad"
+        value={jugador.edad || ""}
+        onChange={handleChange}
+        placeholder="Edad"
+      />
+
+      <div className="seccion-imagenes">
+        <label>Nueva Foto de Perfil:
+          <input 
+            type="file" 
+            accept="image/*"
+            onChange={(e) => setNuevaFotoPerfil(e.target.files[0])}
+          />
+        </label>
+
+        <label>Nuevo Banner:
+          <input 
+            type="file" 
+            accept="image/*"
+            onChange={(e) => setNuevoBanner(e.target.files[0])}
+          />
+        </label>
+
+        <label>Imágenes adicionales (máx. 5):
+          <input 
+            type="file" 
+            multiple
+            accept="image/*"
+            onChange={(e) => setNuevasImagenes([...e.target.files])}
+          />
+        </label>
+      </div>
+
       <button onClick={handleActualizar}>Actualizar</button>
       <button onClick={onClose}>Cancelar</button>
     </div>

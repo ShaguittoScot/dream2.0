@@ -65,38 +65,48 @@ export const eliminarJugador = async (id) => {
 };
 
 // Editar un jugador en Firestore
-export const editarJugador = async (id, datosActualizados, fotoPerfil, fotoParaElBanner, imagenesAdicionales) => {
+export const editarJugador = async (id, datosActualizados, fotoPerfil, fotoParaElBanner, imagenesAdicionales = []) => {
   try {
     const jugadorRef = doc(db, "jugadores", id);
+    
+    // Conversión numérica mejorada
+    const datosConvertidos = {
+      ...datosActualizados,
+      numero: Number(datosActualizados.numero) || 0,
+      edad: Number(datosActualizados.edad) || 0,
+      estadisticas: {
+        partidosJugados: Number(datosActualizados.estadisticas?.partidosJugados) || 0,
+        puntosPorPartido: Number(datosActualizados.estadisticas?.puntosPorPartido) || 0,
+        rebotesPorPartido: Number(datosActualizados.estadisticas?.rebotesPorPartido) || 0,
+        asistenciasPorPartido: Number(datosActualizados.estadisticas?.asistenciasPorPartido) || 0,
+        robosPorPartido: Number(datosActualizados.estadisticas?.robosPorPartido) || 0,
+        taponesPorPartido: Number(datosActualizados.estadisticas?.taponesPorPartido) || 0,
+        minutosPorPartido: Number(datosActualizados.estadisticas?.minutosPorPartido) || 0,
+      }
+    };
 
-    const urlPerfil = fotoPerfil ? await subirImagenACloudinary(fotoPerfil) : datosActualizados.fotoPerfil;
-    const urlBanner = fotoParaElBanner ? await subirImagenACloudinary(fotoParaElBanner) : datosActualizados.fotoParaElBanner;
-
-    const urlsImagenesAdicionales = imagenesAdicionales.length > 0
-      ? await Promise.all(imagenesAdicionales.map((imagen) => subirImagenACloudinary(imagen)))
-      : datosActualizados.imagenesAdicionales || [];
+    // Manejo de imágenes
+    const [urlPerfil, urlBanner, urlsImagenesAdicionales] = await Promise.all([
+      fotoPerfil ? subirImagenACloudinary(fotoPerfil) : datosActualizados.fotoPerfil,
+      fotoParaElBanner ? subirImagenACloudinary(fotoParaElBanner) : datosActualizados.fotoParaElBanner,
+      imagenesAdicionales.length > 0 
+        ? Promise.all(imagenesAdicionales.map(subirImagenACloudinary)) 
+        : datosActualizados.imagenesAdicionales
+    ]);
 
     await updateDoc(jugadorRef, {
-      ...datosActualizados,
-      numero: Number(datosActualizados.numero),
-      edad: Number(datosActualizados.edad),
-      estadisticas: {
-        partidosJugados: datosActualizados.estadisticas.partidosJugados ? Number(datosActualizados.estadisticas.partidosJugados) : 0,
-        puntosPorPartido: datosActualizados.estadisticas.puntosPorPartido ? Number(datosActualizados.estadisticas.puntosPorPartido) : 0,
-        rebotesPorPartido: datosActualizados.estadisticas.rebotesPorPartido ? Number(datosActualizados.estadisticas.rebotesPorPartido) : 0,
-        asistenciasPorPartido: datosActualizados.estadisticas.asistenciasPorPartido ? Number(datosActualizados.estadisticas.asistenciasPorPartido) : 0,
-        robosPorPartido: datosActualizados.estadisticas.robosPorPartido ? Number(datosActualizados.estadisticas.robosPorPartido) : 0,
-        taponesPorPartido: datosActualizados.estadisticas.taponesPorPartido ? Number(datosActualizados.estadisticas.taponesPorPartido) : 0,
-        minutosPorPartido: datosActualizados.estadisticas.minutosPorPartido ? Number(datosActualizados.estadisticas.minutosPorPartido) : 0,
-      },
+      ...datosConvertidos,
       fotoPerfil: urlPerfil,
       fotoParaElBanner: urlBanner,
-      imagenesAdicionales: urlsImagenesAdicionales,
+      imagenesAdicionales: urlsImagenesAdicionales
     });
 
     return true;
   } catch (error) {
-    console.error("Error al editar jugador:", error);
+    console.error("Error detallado al editar:", {
+      error,
+      datosRecibidos: datosActualizados
+    });
     return false;
   }
 };
